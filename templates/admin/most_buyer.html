@@ -1,0 +1,68 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+{% block content %}
+    <!-- Begin Page Content -->
+    <div class="container-fluid mt-4">
+        <!-- Page Heading -->
+        <h1 class="h3 mb-2 text-gray-800">Most Purchasing Users</h1>
+        
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Search</h6>
+            </div>
+            <div class="card-body">
+                <form method="GET" action="{% url 'most_buying_users' %}">
+                    <div class="form-row">
+                        <div class="col">
+                            <label for="fromDate">From Date:</label>
+                            <input type="date" class="form-control" id="fromDate" name="from_date" required>
+                        </div>
+                        <div class="col">
+                            <label for="toDate">To Date:</label>
+                            <input type="date" class="form-control" id="toDate" name="to_date" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Search</button>
+                </form>
+                {% if error %}
+                    <div class="alert alert-danger mt-3">{{ error }}</div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Top Purchasing Users Report</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>User Name</th>
+                                <th>Email</th>
+                                <th>Number of Purchases</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if top_buying_users %}
+                                {% for user in top_buying_users %}
+                                    <tr>
+                                        <td>{{ user.user__name }}</td>
+                                        <td>{{ user.user__email }}</td>
+                                        <td>{{ user.purchase_count }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="3" class="text-center">No data available for the selected date range.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

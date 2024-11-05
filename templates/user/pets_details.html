@@ -1,0 +1,72 @@
+{% extends 'user/base.html' %}
+{% load static %}
+{% block content %}
+<!-- Services Start -->
+<div class="container-fluid py-5">
+    <div class="container">
+        <div class="border-start border-5 border-primary ps-5 mb-5" style="max-width: 600px;">
+            <h6 class="text-primary text-uppercase">Pets</h6>
+            <h1 class="display-5 text-uppercase mb-0">Our Pets</h1>
+        </div>
+        
+        <div class="row g-4">
+            {% for i in pets %}
+            <div class="col-md-3 d-flex justify-content-center"> <!-- Center align cards in columns -->
+                <div class="card shadow-sm rounded-3 card-square"> <!-- Square shape for all cards -->
+                    <img src="{{ i.imageURL }}" class="card-img-top pet-image" alt="Product Image">
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <a href="{% url 'pet_full_details' i.pk %}" class="text-decoration-none text-dark">
+                            <h5 class="card-title text-uppercase mb-2">{{ i.name }}</h5>
+                            <p class="card-text mb-1"><strong>Price:</strong> ₹ {{ i.price }}</p>
+                            <p class="card-text"><strong>Stock:</strong> {{ i.stock_level }}</p>
+                        </a>
+                        <a href="{% url 'pet_booking' i.pk %}" class="btn btn-primary d-flex align-items-center justify-content-center mt-3">
+                            Book Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <p class="text-center">No pets available at the moment.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- Additional CSS for square cards and uniform image sizes -->
+<style>
+    .card-square {
+        width: 250px; /* Fixed square width */
+        height: 100px; /* Fixed square height for uniformity */
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card-square:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .pet-image {
+        width: 100%; /* Full width of card */
+        height: 50px; /* Fixed height to fit square card layout */
+        object-fit: cover; /* Ensures image covers the area */
+        border-top-left-radius: 0.25rem;
+        border-top-right-radius: 0.25rem;
+    }
+
+    .card-body {
+        padding: 0.5rem;
+        flex: 1;
+        text-align: center; /* Center align content */
+    }
+
+    .btn-primary {
+        border-radius: 0.5rem;
+        font-weight: bold;
+    }
+</style>

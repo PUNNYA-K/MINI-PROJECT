@@ -1,0 +1,92 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+{% block content %}
+    <!-- Begin Page Content -->
+    <div class="container-fluid mt-4">
+        <!-- Page Heading -->
+        <h1 class="h3 mb-4 text-gray-800">Report</h1>
+
+        <!-- Search Card -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Search</h6>
+            </div>
+            <div class="card-body">
+                <form method="GET" action="{% url 'sales_report' %}">
+                    <div class="form-row">
+                        <div class="col">
+                            <label for="fromDate">From Date:</label>
+                            <input type="date" class="form-control" id="fromDate" name="from_date" value="{{ from_date|date:'Y-m-d' }}" required>
+                        </div>
+                        <div class="col">
+                            <label for="toDate">To Date:</label>
+                            <input type="date" class="form-control" id="toDate" name="to_date" value="{{ to_date|date:'Y-m-d' }}" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-4">Search</button>
+                </form>
+            </div>
+        </div>
+   
+        <!-- Report Summary Card -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Report Summary</h6>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <!-- Total Sales -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card bg-light shadow-sm border-primary">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary"><i class="fas fa-dollar-sign"></i> Total Sales</h5>
+                                <p class="card-text h4 font-weight-bold">₹ {{ total_sales }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total Orders -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card bg-light shadow-sm border-success">
+                            <div class="card-body">
+                                <h5 class="card-title text-success"><i class="fas fa-shopping-cart"></i> Total Orders</h5>
+                                <p class="card-text h4 font-weight-bold">{{ total_orders }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total Pet Bookings -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card bg-light shadow-sm border-info">
+                            <div class="card-body">
+                                <h5 class="card-title text-info"><i class="fas fa-paw"></i> Total Pet Bookings</h5>
+                                <p class="card-text h4 font-weight-bold">{{ total_bookings }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total Product Quantity Sold -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card bg-light shadow-sm border-warning">
+                            <div class="card-body">
+                                <h5 class="card-title text-warning"><i class="fas fa-box"></i> Total Product Quantity Sold</h5>
+                                <p class="card-text h4 font-weight-bold">{{ product_sales.total_quantity }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total Product Sales Amount -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card bg-light shadow-sm border-danger">
+                            <div class="card-body">
+                                <h5 class="card-title text-danger"><i class="fas fa-coins"></i> Total Product Sales Amount</h5>
+                                <p class="card-text h4 font-weight-bold">₹ {{ product_sales.total_sales }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

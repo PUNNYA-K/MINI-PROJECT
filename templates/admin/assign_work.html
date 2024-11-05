@@ -1,0 +1,62 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+{% block content %}
+          <!-- Content wrapper -->
+          <div class="content-wrapper">
+            <!-- Content -->
+
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Manage works/</span>  Assign work</h4>
+              <!-- Basic Layout & Basic with Icons -->
+              <div class="row">
+                <!-- Basic Layout -->
+                <div class="col-xxl">
+                  <div class="card mb-4">        
+                    <div class="card-body">
+                        
+                      <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                      
+                            
+                          <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-default-country">Status</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="basic-default-country" name="status" required>
+                                
+                                <option value="Processing">Processing</option>
+                                <option value="On The Way">On The Way</option>
+                                <option value="Delivered">Delivered</option>
+                          
+                                <!-- Add more countries as needed -->
+                                </select>
+                            </div>
+                            </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-default-country">Category</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="basic-default-country" name="boy" required>
+                                {% for i in boys %} 
+                                <option value="{{i.pk}}">{{i.name}}</option>
+                                
+                                {% endfor %}
+                                <!-- Add more countries as needed -->
+                                </select>
+                            </div>
+                            </div>
+
+       
+                        <div class="row justify-content-end">
+                          <div class="col-sm-10">
+                            <button type="submit" class="btn btn-primary">Assign </button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+            
+                
+              </div>
+            </div>
+
+{% endblock %} 

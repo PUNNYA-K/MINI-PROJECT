@@ -1,0 +1,149 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+{% block content %}
+          <!-- Content wrapper -->
+          <div class="content-wrapper">
+            <!-- Content -->
+
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Manage Staff/</span>  Add Staff</h4>
+              <!-- Basic Layout & Basic with Icons -->
+              <div class="row">
+                <!-- Basic Layout -->
+                <div class="col-xxl">
+                  <div class="card mb-4">        
+                    <div class="card-body">
+                    {% for msg in messages %}
+                  <h6 style="color: red; text-align: center; padding-top: 11px; padding-bottom: 11px; border-radius: 10px;">{{msg}}</h6>
+                  {% endfor %}
+                        
+                      <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-default-name">User Name</label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control" id="basic-default-name" placeholder="User Name" name="username" required />
+                            </div>
+                          </div>
+
+                        <div class="row mb-3">
+                          <label class="col-sm-2 col-form-label" for="basic-default-name">Staff Name</label>
+                          <div class="col-sm-10">
+                            <input type="text" class="form-control" id="basic-default-name" placeholder="Enter Staff Name" name="name" required />
+                          </div>
+                        </div>
+
+                        <div class="row mb-3">
+                          <label class="col-sm-2 col-form-label" for="basic-default-name">Phone No</label>
+                          <div class="col-sm-10">
+                            <input type="text" class="form-control" id="basic-default-name" placeholder="Enter Phone No" name="phone" pattern="\d{10}" title="Phone number must be 10 digits" required />
+                          </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                          <label class="col-sm-2 col-form-label" for="basic-default-name">Email Id</label>
+                          <div class="col-sm-10">
+                            <input
+                              type="email"
+                              class="form-control"
+                              id="email"
+                              placeholder="Enter Email Id"
+                              name="email"
+                              required
+                              pattern="[a-z0-9._%+-]+@gmail\.com"
+                              title="Please enter a valid Gmail address in lowercase (e.g., example@gmail.com)"
+                              oninput="validateEmail()"
+                            />
+                            <small class="text-muted">Only lowercase letters are allowed, and the email should end with @gmail.com</small>
+                            <div id="emailError" style="color: red; display: none;">Please enter a valid lowercase Gmail address (e.g., example@gmail.com).</div>
+                          </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="role">Role</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="role" name="Role" required>
+                                    <option value="" disabled selected>Select Role</option>
+                                    <option value="Stock Manager">Stock Manager</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                          <label class="col-sm-2 col-form-label" for="basic-default-name">Password</label>
+                          <div class="col-sm-10">
+                            <input type="password" class="form-control" id="password" placeholder="Enter Password" name="Password" pattern=".{8,}" title="Password must be at least 8 characters" required />
+                          </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-default-name">Confirm Password</label>
+                            <div class="col-sm-10">
+                              <input type="password" class="form-control" id="password1" placeholder="Enter Confirm Password" name="Password1" pattern=".{8,}" title="Password must be at least 8 characters" required />
+                            </div>
+                        </div>
+                        
+                        <div class="row justify-content-end">
+                          <div class="col-sm-10">
+                            <button type="submit" class="btn btn-primary">Add </button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="container-xxl flex-grow-1 container-p-y">
+                <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Manage Staff /</span> View Staff</h4>
+  
+                <!-- Basic Bootstrap Table -->
+                <div class="card">
+                  <div class="table-responsive text-nowrap">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>User Name</th>
+                          <th>Staff Name</th>
+                          <th>Mobile</th>                     
+                          <th>Role</th>
+                          <th>Email</th>
+                          <th></th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody class="table-border-bottom-0">
+                      {% for i in staff %}
+                        <tr>
+                          <td><strong>{{i.username}}</strong></td>
+                          <td>{{i.name}}</td>
+                          <td>{{i.mobile}}</td>
+                          <td>{{i.role}}</td>
+                          <td>{{i.email}}</td>
+                          <td><a href="{% url 'update_staff' i.pk %}" class="btn btn-success">Update</a></td>
+                          <td><a href="{% url 'delete_staff' i.pk %}" class="btn btn-danger">Delete</a></td>
+                        </tr>
+                    {% endfor %} 
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+            </div>
+            <!-- / Content -->
+           
+<script>
+function validateEmail() {
+  const emailField = document.getElementById("email");
+  const emailError = document.getElementById("emailError");
+  const emailPattern = /^[a-z0-9._%+-]+@gmail\.com$/;
+
+  if (emailField.value && !emailPattern.test(emailField.value)) {
+    emailError.style.display = "block";
+  } else {
+    emailError.style.display = "none";
+  }
+}
+</script>
+
+{% endblock %}

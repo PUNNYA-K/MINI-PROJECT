@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div style="text-align: center;">
+        <h1>Pet spot</h1><br>
+        <h2>Admin</h2><hr><br>
+
+        <h4><a href="{% url 'admin_login' %}">login</a></h4><br>
+        <h2>Customer</h2>
+        <h4><a href="{% url 'cus_register' %}">Register</a></h4>
+        <h4><a href="{% url 'cus_login' %}">login</a></h4>
+        <h2>Staff</h2>
+    
+        <h4><a href="{% url 'staff_login' %}">login</a></h4>
+        <h2>Delivery Boys</h2>
+    
+        <h4><a href="{% url 'boy_login' %}">login</a></h4>
+
+    </div>
+    
+</body>
+</html>

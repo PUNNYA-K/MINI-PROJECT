@@ -1,0 +1,60 @@
+{% extends 'user/base.html' %}
+{% load static %}
+{% block content %}
+<!-- Services Start -->
+    <div class="container-fluid py-5">
+        <div class="container">
+            <div class="border-start border-5 border-primary ps-5 mb-5" style="max-width: 600px;">
+                <h6 class="text-primary text-uppercase">Products</h6>
+                <h1 class="display-5 text-uppercase mb-0">Our Products</h1>
+            </div>
+            <div class="row g-5">
+             {% if pets.exists %}
+                {% for i in pets %}
+                <div class="col-md-3">
+                    <div class="card">
+
+                        <img src="{{i.imageURL}}" class="card-img-top" alt="Product Image">
+                        <div class="card-body">
+                            <a href="{% url 'pet_full_details' i.pk %}">
+                            <h5 class="card-title text-uppercase">{{i.name}}</h5>
+                            <p class="card-text"><strong>Price:</strong> ₹ {{i.price}}</p>
+                            <p class="card-text"><strong>Stock:</strong> {{i.stock_level}}</p></a>
+                            <a href="{% url 'pet_booking' i.pk %}" class="btn btn-primary d-flex align-items-center justify-content-center">
+                                <i class="bi bi-cart me-2"></i> Book Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                  <p>No pets found.</p>
+                {% endif %}
+
+                {% if products.exists %}
+                {% for j in products %}
+                <div class="col-md-3">
+                    <div class="card">
+                        <img src="{{j.imageURL_1}}" class="card-img-top" alt="Product Image">
+                        <div class="card-body">
+                            <a href="{% url 'product_details' j.pk %}">
+                            <h5 class="card-title text-uppercase">{{j.name}}</h5>
+                            <p class="card-text"><strong>Price:</strong> ₹ {{j.price}}</p>
+                            <p class="card-text"><strong>Stock:</strong> {{j.stock_level}}</p></div></a>
+                            <a href="{% url 'add_to_cart_product' j.pk %}" class="btn btn-primary d-flex align-items-center justify-content-center">
+                                <i class="bi bi-cart me-2"></i> Add to Cart
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                 {% else %}
+                    <p>No products found.</p>
+                {% endif %}
+                
+               
+                
+            </div>
+        </div>
+    </div>
+{% endblock %}

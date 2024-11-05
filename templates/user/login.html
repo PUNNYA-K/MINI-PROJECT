@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Overall body styling */
+        body {
+            background: linear-gradient(135deg, #81b197, #81b197); /* Gradient background */
+            font-family: 'Arial', sans-serif;
+            margin: 0; /* Remove default margin */
+        }
+
+        /* Header styling */
+        .header {
+            background-color: #fff; /* White background for header */
+            padding: 15px 30px; /* Increased padding for header */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Light shadow for header */
+            position: fixed; /* Fixed position */
+            top: 0; /* Align to the top */
+            left: 0; /* Align to the left */
+            width: 100%; /* Full width */
+            z-index: 1000; /* Ensure it stays above other elements */
+        }
+
+        .header h1 {
+            color: #000; /* Black font color */
+            font-size: 2.5rem; /* Larger font size for title */
+            font-weight: bold;
+            margin: 0; /* Remove default margin */
+        }
+
+        /* Login container styling */
+        .login-container {
+    max-width: 400px; /* Set maximum width */
+    margin: 200px auto 0; /* Increased margin to move the container down */
+    background-color: #fff; /* White background for login form */
+    padding: 50px; /* Padding for login form */
+    border-radius: 12px; /* Slightly more rounded corners */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); /* Enhanced shadow effect */
+    transition: transform 0.3s; /* Transition effect for hover */
+}
+
+
+        .login-container:hover {
+            transform: translateY(-5px); /* Lift effect on hover */
+        }
+
+        /* Form control styling */
+        .form-group {
+            margin-bottom: 20px; /* Space between form groups */
+        }
+
+        .form-control {
+            border-radius: 20px; /* Rounded input fields */
+            padding: 12px; /* Padding for input fields */
+            font-size: 1rem; /* Font size for input fields */
+            border: 2px solid #ccc; /* Border for input fields */
+            transition: border-color 0.3s; /* Transition for border color */
+        }
+
+        .form-control:focus {
+            border-color: #007bff; /* Highlight border color on focus */
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Focus shadow effect */
+        }
+
+        /* Button styling */
+        .btn-primary {
+            background-color: #255632; /* Primary button color */
+            border-color: #255632; /* Border color */
+            border-radius: 20px; /* Rounded button */
+            padding: 12px; /* Padding for button */
+            font-size: 1.1rem; /* Larger font size for button */
+            font-weight: bold; /* Bold text */
+            transition: background-color 0.3s, transform 0.3s; /* Transition for hover effect */
+        }
+
+        .btn-primary:hover {
+            background-color: #255632; /* Darker color on hover */
+            border-color: #255632; /* Darker border on hover */
+            transform: scale(1.05); /* Slightly enlarge button on hover */
+        }
+
+        /* Custom messages */
+        .message {
+            color: red; /* Text color for messages */
+            text-align: center; /* Center align text */
+            background-color: #f7e7a4; /* Light background for messages */
+            padding: 10px; /* Padding for messages */
+            border-radius: 8px; /* Rounded corners */
+            margin-bottom: 20px; /* Space below messages */
+            font-weight: bold; /* Bold text */
+        }
+
+        /* Register link */
+        .text-center a {
+            color: #007bff; /* Color for links */
+            font-weight: bold; /* Bold text for links */
+            text-decoration: none; /* No underline for links */
+            transition: color 0.3s; /* Transition for hover effect */
+        }
+
+        .text-center a:hover {
+            color: #0056b3; /* Darker color on hover */
+        }
+
+        /* Responsive design */
+        @media (max-width: 576px) {
+            .header h1 {
+                font-size: 2rem; /* Smaller font size for small screens */
+            }
+
+            .login-container {
+                width: 90%; /* Full width for small screens */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>Pet Spot</h1>
+    </div>
+
+    <!-- Login Form -->
+    <div class="container">
+        <div class="login-container">
+            <h2 class="text-center mb-4" style="color: #255632;">Customer Login</h2>
+            {% for msg in messages %}
+                <div class="message">{{ msg }}</div>
+            {% endfor %}
+            <form method="POST" onsubmit="return validateForm()">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" class="form-control" name="username" id="username" placeholder="Enter your username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" class="form-control" name="password" id="password" placeholder="Enter your password" minlength="8" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block mt-4">Login</button>
+            </form>
+            <div class="text-center mt-3">
+                <p>Don't have an account? <a href="{% url 'cus_register' %}">Register here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Form validation script -->
+    <script>
+        function validateForm() {
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            if (username === "") {
+                alert("Please enter your username.");
+                return false;
+            }
+
+            if (password === "") {
+                alert("Please enter your password.");
+                return false;
+            }
+
+            if (password.length < 8) {
+                alert("Password must be at least 8 characters long.");
+                return false;
+            }
+
+            return true; // Form is valid
+        }
+    </script>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+{% extends 'user/base.html' %}
+{% load static %}
+{% block content %}
+<!-- Services Start -->
+<div class="container-fluid py-5">
+    <div class="container">
+        <div class="border-start border-5 border-primary ps-5 mb-5" style="max-width: 600px;">
+            <h6 class="text-primary text-uppercase">Products</h6>
+            <h1 class="display-5 text-uppercase mb-0">Our Products</h1>
+        </div>
+
+        <div class="row g-5"> <!-- Adjusted to control the gap between cards -->
+            {% for j in products %}
+            <div class="col-md-3 d-flex justify-content-center"> <!-- Center align cards in columns -->
+                <div class="card card-square"> <!-- Square shape for all cards -->
+                    <img src="{{ j.imageURL_1 }}" class="card-img-top pet-image" alt="Product Image">
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <a href="{% url 'product_details' j.pk %}" class="text-decoration-none text-dark">
+                            <h5 class="card-title text-uppercase mb-2">{{ j.name }}</h5>
+                            <p class="card-text mb-1"><strong>Price:</strong> ₹ {{ j.price }}</p>
+                            <p class="card-text"><strong>Stock:</strong> {{ j.stock_level }}</p>
+                        </a>
+                        <a href="{% url 'add_to_cart_product' j.pk %}" class="btn btn-primary d-flex align-items-center justify-content-center mt-3">
+                            <i class="bi bi-cart me-2"></i> Add to Cart
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <p class="text-center">No products available at the moment.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- Additional CSS for square cards and uniform image sizes -->
+<style>
+    .card-square {
+        width: 250px; /* Fixed square width */
+        height: 250px; /* Fixed square height for uniformity */
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card-square:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .pet-image {
+        width: 100%; /* Full width of card */
+        height: 150px; /* Fixed height to fit square card layout */
+        object-fit: cover; /* Ensures image covers the area */
+        border-top-left-radius: 0.25rem; /* Rounded corners for the top */
+        border-top-right-radius: 0.25rem;
+    }
+
+    .card-body {
+        padding: 0.5rem; /* Padding for the content */
+        flex: 1; /* Ensures the content area is consistent */
+    }
+
+    .btn-primary {
+        border-radius: 0.5rem; /* Rounded button */
+        font-weight: bold; /* Bold button text */
+    }
+</style>

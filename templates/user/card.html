@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Form</title>
+  <link rel="stylesheet" href="{% static 'card/style.css' %}">
+</head>
+<body style="background-color: rgb(160, 185, 162);">
+        
+        <div style="background-color: rgb(70, 110, 89); ;" class="container">
+    <h2>Payment Form</h2>
+    
+    <form id="payment-form" method="POST" onsubmit="return validateForm()">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="card-number">Card Number</label>
+        <input type="number" id="card-number" name="card-number" placeholder="1234 5678 9012 3456" min="0" required>
+      </div>
+      <div class="form-group">
+        <label for="expiry">Expiration Date</label>
+        <input type="text" id="expiry" name="expiry" placeholder="MM/YY" required>
+      </div>
+      <div class="form-group">
+        <label for="cvv">CVV</label>
+        <input type="text" id="cvv" placeholder="123" required>
+      </div>
+      <div class="form-group">
+        <label for="name">Cardholder Name</label>
+        <input type="text" id="name" name="name" placeholder="John Doe" required>
+      </div>
+      <div class="form-group">
+        <label for="total-amount">Total Amount</label>
+        <input type="number" id="total-amount" name="total_amount" value="{{ cart.total_price }}" readonly required>
+      </div>
+
+      <button style="background-color: rgb(88, 183, 88);" type="submit">Pay Now</button>
+    </form>
+  </div>
+
+  <!-- <script src="{% static 'card/script.js' %}"></script> -->
+  <script>
+    function validateForm() {
+      const cardNumberInput = document.getElementById('card-number');
+      const cardNumber = cardNumberInput.value;
+
+      // Check if card number is less than 0
+      if (cardNumber < 0) {
+        alert('Card number cannot be negative.');
+        return false; // Prevent form submission
+      }
+
+      return true; // Allow form submission if valid
+    }
+  </script>
+</body>
+</html>

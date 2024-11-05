@@ -1,0 +1,84 @@
+{% extends 'staff/base.html' %}
+{% load static %}
+{% block content %}
+          <!-- Content wrapper -->
+          <div class="content-wrapper">
+            <!-- Content -->
+
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Manage Products/</span>  Update Product</h4>
+              <!-- Basic Layout & Basic with Icons -->
+              <div class="row">
+                <!-- Basic Layout -->
+                <div class="col-xxl">
+                  <div class="card mb-4">        
+                    <div class="card-body">
+                        
+                      <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-default-name">Product Name</label>
+                            <div class="col-sm-10">
+                              <input type="text" value="{{update.name}}" class="form-control" id="basic-default-name" placeholder="Product Name" name="name"  required/>
+                            </div>
+                          </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-default-country">Category</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="basic-default-country" name="category" required>
+                                <option value="{{update.category.name}}">{{update.category.name}}</option>
+                                {% for i in category %} 
+                                <option value="{{i.name}}">{{i.name}}</option>
+                                
+                                {% endfor %}
+                                <!-- Add more countries as needed -->
+                                </select>
+                            </div>
+                            </div>
+
+                        
+                        <div class="row mb-3">
+                          <label class="col-sm-2 col-form-label" for="basic-default-name">Price </label>
+                          <div class="col-sm-10">
+                            <input type="number" value="{{update.price}}" class="form-control" id="basic-default-name" placeholder="Enter price" name="price" min="1" required/>
+                          </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-default-name">Stock Level</label>
+                            <div class="col-sm-10">
+                              <input type="number" value="{{update.stock_level}}" class="form-control" id="basic-default-name" placeholder="Enter Stock Level" min="1" name="StockLevel"  required/>
+                            </div>
+                          </div>
+                         
+                          <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-default-name">picture</label>
+                            
+                            <div class="col-sm-10">
+                                <img src="{{update.imageURL_1}}" alt="" height="60px" width="60px" style="margin-bottom: 10px;">
+                              <input type="file" class="form-control" id="basic-default-name" placeholder="Enter Pet picture" name="img"/>
+                            </div>
+                          </div>
+                          <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-default-address">Description</label>
+                            <div class="col-sm-10">
+                              <textarea class="form-control" id="basic-default-address" placeholder="Enter description" name="description" rows="4" required>{{update.description}}</textarea>
+                            </div>
+                          </div>
+                          
+                                
+                        <div class="row justify-content-end">
+                          <div class="col-sm-10">
+                            <button type="submit" class="btn btn-primary">Update </button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+            
+                
+              </div>
+            </div>
+        
+{% endblock %}  

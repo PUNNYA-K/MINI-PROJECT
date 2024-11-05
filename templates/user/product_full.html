@@ -1,0 +1,53 @@
+{% extends 'user/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid py-5">
+    <div class="container">
+        <div class="row gx-5">
+            <!-- Product Image -->
+            <div class="col-lg-5 mb-5 mb-lg-0" style="min-height: 500px;">
+                <div class="position-relative h-100">
+                   
+                        <img class="position-absolute w-50 h-50 rounded" src="{{ product.imageURL_1 }}" style="object-fit: cover;">
+                   
+                </div>
+            </div>
+
+            <!-- Product Details -->
+            <div class="col-lg-7">
+                <!-- Product Name and Tagline -->
+                <div class="border-start border-5 border-primary ps-5 mb-4">
+                    <h6 class="text-primary text-uppercase">Product Details</h6>
+                    
+                        <h1 class="display-5 text-uppercase mb-0">{{ product.name }}</h1>
+                  
+                </div>
+                
+                <!-- Price and Stock Level -->
+                <div class="align-items-center mb-4">
+                    <h5 class="text-body">Price: ₹ {{ product.price }}</h5><br>
+
+                    <h5 class="text-body">Stock Level: {{ product.stock_level }}</h5><br>
+                    <h5 class="text-body">Category: {{ product.category.name }}</h5><br>
+
+                    
+                </div>
+
+                <!-- Product Description -->
+                <div class="bg-light p-4 rounded">
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="pills-description" role="tabpanel">
+                            <p class="mb-0">{{ product.description }}</p>
+                        </div>
+                    </div>
+                </div>
+               
+                <a href="{% url 'add_to_cart_product' product.pk %}" class="btn btn-primary d-flex align-items-center justify-content-center mt-3">
+                    <i class="bi bi-cart me-2"></i> Add to cart 
+                </a>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
