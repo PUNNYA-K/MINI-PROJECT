@@ -7,9 +7,58 @@
   <title>Payment Form</title>
   <link rel="stylesheet" href="{% static 'card/style.css' %}">
 </head>
-<body style="background-color: rgb(160, 185, 162);">
+<body style="background: url('{% static 'user/img/logwall.jpg' %}') no-repeat center center fixed; background-size: cover;">
+
+  <style>
+    header {
+      background-color: #ffffff; /* White background */
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between; /* Space between title and button */
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow for header */
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+    }
+  
+    .header-title {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #000000; /* Black text color */
+    }
+  
+    .home-button {
+      background-color: #466e59;
+      color: #ffffff;
+      padding: 8px 16px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      margin-right: 10%;
+    }
+  
+    .home-button:hover {
+      background-color: #355748;
+    }
+  
+    .container {
+      margin-top: 100px; /* Adjust container position below fixed header */
+    }
+  </style>
+  
+
+
+  <header>
+    <div class="header-title">PETSPOT</div>
+    <a href="{% url 'cus_home' %}" class="home-button">Home</a>
+  </header>
+  
+
         
-        <div style="background-color: rgb(70, 110, 89); ;" class="container">
+  <div style="background-color: rgb(127, 160, 122); padding: 20px; border-radius: 8px; margin-top: 200px;" class="container">
     <h2>Payment Form</h2>
     
     <form id="payment-form" method="POST" onsubmit="return validateForm()">

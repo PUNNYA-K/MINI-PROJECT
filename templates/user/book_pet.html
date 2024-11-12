@@ -27,26 +27,68 @@
         <!-- Account Number -->
         <label for="accountNumber">Account Number :</label>
         <div class="col-12">
-            <input type="number" class="form-control bg-light border-0 px-4" name="account_number" id="accountNumber" placeholder="Enter Account Number" style="height: 55px;">
+            <input type="text" class="form-control bg-light border-0 px-4" name="account_number" id="accountNumber" placeholder="Enter Account Number" style="height: 55px;" minlength="16" maxlength="16" pattern="\d{16}" required>
         </div>
+        
         
         <!-- Holder Name -->
         <label for="holderName">Holder Name :</label>
-        <div class="col-12">
-            <input type="text" class="form-control bg-light border-0 px-4" name="holder_name" id="holderName" placeholder="Enter Holder Name" style="height: 55px;">
-        </div>
+<div class="col-12">
+    <input type="text" class="form-control bg-light border-0 px-4" name="holder_name" id="holderName" placeholder="Enter Holder Name" style="height: 55px;" minlength="3" required>
+</div>
+
         
-        <!-- Number of Stocks -->
-        <label for="stockCount">Quantity :</label>
-        <div class="col-12">
-            <input type="number" class="form-control bg-light border-0 px-4" name="stock_count" id="stockCount" placeholder="Enter quantity" style="height: 55px;">
-        </div>
+  <!-- Number of Stocks -->
+<label for="stockCount">Quantity :</label>
+<div class="col-12">
+    <input type="number" class="form-control bg-light border-0 px-4" name="stock_count" id="stockCount" placeholder="Enter quantity" style="height: 55px;" min="1" step="1" required>
+</div>
+
         
-        <!-- Advance Amount -->
-        <label for="advanceAmount">Advance Amount :</label>
-        <div class="col-12">
-            <input type="number" class="form-control bg-light border-0 px-4" name="advance_amount" id="advanceAmount" placeholder="Enter Advance Amount" style="height: 55px;">
-        </div>
+<!-- Advance Amount -->
+<label for="advanceAmount">Advance Amount :</label>
+<div class="col-12">
+    <input type="number" class="form-control bg-light border-0 px-4" name="advance_amount" id="advanceAmount" placeholder="Enter Advance Amount" style="height: 55px;" min="50" step="50" value="50" required>
+    <span id="error-message" style="color: red; display: none;">Advance amount cannot be greater than one pet price.</span>
+</div>
+<div class="col-12">
+    <label for="bookingDate">Expecting Date of Purchase :</label>
+    <input type="date" class="form-control bg-light border-0 px-4" name="booking_date" id="bookingDate" placeholder="Select Booking Date" style="height: 55px;" min="{{ today|date:'Y-m-d' }}" required>
+</div>
+<!-- Assume that the pet price is a hidden field or comes from your backend as part of the template context -->
+<input type="hidden" id="petPrice" value="{{ pet.price }}">
+
+<script>
+    // Get references to the form elements
+    const advanceAmountField = document.getElementById('advanceAmount');
+    const errorMessage = document.getElementById('error-message');
+    const petPrice = parseFloat(document.getElementById('petPrice').value); // The pet price from the backend
+
+    // Add an event listener for changes to the advance amount input field
+    advanceAmountField.addEventListener('input', function() {
+        // Get the current value of the advance amount
+        const advanceAmount = parseFloat(advanceAmountField.value);
+
+        // Check if the advance amount is greater than the pet price
+        if (advanceAmount > petPrice) {
+            // Show error message
+            errorMessage.style.display = 'inline';
+            advanceAmountField.setCustomValidity('Advance amount cannot be greater than one pet price.');
+        } else {
+            // Hide error message
+            errorMessage.style.display = 'none';
+            advanceAmountField.setCustomValidity('');
+        }
+    });
+</script>
+<script>
+    // Get the current date in YYYY-MM-DD format
+    const today = new Date().toISOString().split('T')[0];
+
+    // Set the minimum date attribute to today's date
+    document.getElementById("bookingDate").setAttribute("min", today);
+</script>
+
         
         <!-- Submit Button -->
         <div class="col-12">

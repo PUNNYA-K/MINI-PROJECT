@@ -18,10 +18,39 @@
                             <label for="fromDate">From Date:</label>
                             <input type="date" class="form-control" id="fromDate" name="from_date" value="{{ from_date|date:'Y-m-d' }}" required>
                         </div>
+                        
                         <div class="col">
                             <label for="toDate">To Date:</label>
                             <input type="date" class="form-control" id="toDate" name="to_date" value="{{ to_date|date:'Y-m-d' }}" required>
                         </div>
+                        
+                        <script>
+                            // Set today's date for 'toDate' max attribute
+                            const today = new Date();
+                            const todayFormatted = today.toISOString().split('T')[0];
+                            document.getElementById("toDate").setAttribute("max", todayFormatted);
+                        
+                            // Set yesterday's date for 'fromDate' max attribute
+                            const yesterday = new Date();
+                            yesterday.setDate(today.getDate() - 1);
+                            const yesterdayFormatted = yesterday.toISOString().split('T')[0];
+                            document.getElementById("fromDate").setAttribute("max", yesterdayFormatted);
+                        
+                            // Update 'toDate' minimum date based on 'fromDate' selection
+                            document.getElementById('fromDate').addEventListener('change', function() {
+                                const fromDateValue = new Date(this.value);
+                                fromDateValue.setDate(fromDateValue.getDate() + 1);  // 'toDate' must be after 'fromDate'
+                                const minDate = fromDateValue.toISOString().split('T')[0];
+                                document.getElementById('toDate').setAttribute('min', minDate);
+                            });
+                        
+                            // Trigger the event to set the 'toDate' minimum if 'fromDate' has a pre-selected value
+                            if (document.getElementById('fromDate').value) {
+                                document.getElementById('fromDate').dispatchEvent(new Event('change'));
+                            }
+                        </script>
+                        
+                        
                     </div>
                     <button type="submit" class="btn btn-primary mt-4">Search</button>
                 </form>

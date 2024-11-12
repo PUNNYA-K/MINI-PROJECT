@@ -11,8 +11,8 @@
         
         <div class="row g-4">
             {% for i in pets %}
-            <div class="col-md-3 d-flex justify-content-center"> <!-- Center align cards in columns -->
-                <div class="card shadow-sm rounded-3 card-square"> <!-- Square shape for all cards -->
+            <div class="col-md-3 d-flex justify-content-center">
+                <div class="card shadow-lg rounded-4 card-square"> <!-- Rounded corners and shadow -->
                     <img src="{{ i.imageURL }}" class="card-img-top pet-image" alt="Product Image">
                     <div class="card-body d-flex flex-column justify-content-between">
                         <a href="{% url 'pet_full_details' i.pk %}" class="text-decoration-none text-dark">
@@ -36,33 +36,37 @@
 </div>
 {% endblock %}
 
-<!-- Additional CSS for square cards and uniform image sizes -->
+<!-- Additional CSS for rounded corners and shadow effect -->
 <style>
-    .card-square {
-        width: 250px; /* Fixed square width */
-        height: 100px; /* Fixed square height for uniformity */
-        display: flex;
-        flex-direction: column;
-        transition: transform 0.3s, box-shadow 0.3s;
-    }
+   .card-square {
+    width: 250px; /* Fixed card width */
+    height: 350px; /* Fixed height for uniformity */
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-radius: 1.5rem; /* Slightly more rounded corners */
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2); /* Softer, larger shadow */
+}
+
+
 
     .card-square:hover {
-        transform: translateY(-10px);
+        transform: translateY(-5px);
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
 
     .pet-image {
         width: 100%; /* Full width of card */
-        height: 50px; /* Fixed height to fit square card layout */
-        object-fit: cover; /* Ensures image covers the area */
-        border-top-left-radius: 0.25rem;
-        border-top-right-radius: 0.25rem;
+        height: 200px; /* Consistent height for images */
+        object-fit: cover;
+        border-top-left-radius: 1rem; /* Rounded top-left corner */
+        border-top-right-radius: 1rem; /* Rounded top-right corner */
     }
 
     .card-body {
-        padding: 0.5rem;
+        padding: 1rem;
         flex: 1;
-        text-align: center; /* Center align content */
+        text-align: center;
     }
 
     .btn-primary {

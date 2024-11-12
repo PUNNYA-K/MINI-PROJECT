@@ -62,8 +62,8 @@ def admin_login(request):
 
 ########admin home #######
 def adm_home(request):
-    boy=User.objects.filter(is_boy=True)
-    staff=User.objects.filter(is_staff=True)
+    boy=User.objects.filter(is_boy=True).order_by('-id')
+    staff=User.objects.filter(is_staff=True).order_by('-id')
     context={
         'boy':boy,
         'staff':staff
@@ -72,19 +72,25 @@ def adm_home(request):
 
 ##############staff register ##################
 
+# In your views.py
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import User  # Make sure you import your User model
+
 def staff_register(request):
-    staff=User.objects.filter(is_staff=True)
+    # Retrieve staff members ordered by the most recent (descending by ID)
+    staff = User.objects.filter(is_staff=True).order_by('-id')
     
     if request.method == "POST":
         uname = request.POST.get("username")
         passw1 = request.POST.get("Password")
-        passw2= request.POST.get("Password1")
+        passw2 = request.POST.get("Password1")
         name = request.POST.get("name")
         phone = request.POST.get("phone")
         email = request.POST.get("email")
-        Role = request.POST.get("Role")
+        role = request.POST.get("Role")
         
-        if passw1 ==passw2:
+        if passw1 == passw2:
             if User.objects.filter(username=uname).exists():
                 messages.error(request, 'Username already exists.')
                 return render(request, 'admin/add_staff.html')
@@ -95,7 +101,7 @@ def staff_register(request):
                     name=name,
                     mobile=phone,
                     email=email,
-                    role=Role,
+                    role=role,
                     is_staff=True,
                 )
                 user.save()
@@ -103,14 +109,14 @@ def staff_register(request):
                 messages.success(request, 'Registration successful.')
                 return redirect('staff_register')
         else:
-            messages.error(request, 'password not matching.')
+            messages.error(request, 'Passwords do not match.')
             return redirect('staff_register')
     
     else:
-        context={
-        'staff':staff
-    }
-        return render(request, "admin/add_staff.html",context)
+        context = {
+            'staff': staff
+        }
+        return render(request, "admin/add_staff.html", context)
 
 ##### delete shop
 def delete_staff(request,pk):
@@ -122,7 +128,7 @@ def delete_staff(request,pk):
 ##############staff register ##################
 
 def boy_register(request):
-    boy=User.objects.filter(is_boy=True)
+    boy=User.objects.filter(is_boy=True).order_by('-id')
     
     if request.method == "POST":
         uname = request.POST.get("username")
@@ -239,7 +245,7 @@ def update_staff(request,pk):
         update.email=request.POST.get('email') 
         update.role=request.POST.get('Role') 
         update.save()
-        messages.success(request,"Update successfully")
+        messages.success(request,"Updated successfully")
         return redirect('staff_register')
     context={
         'update':update
@@ -258,7 +264,7 @@ def update_boy(request,pk):
         update.email=request.POST.get('email') 
         update.role=request.POST.get('Role') 
         update.save()
-        messages.success(request,"Update successfully")
+        messages.success(request,"Updated successfully")
         return redirect('boy_register')
     context={
         'update':update
@@ -314,6 +320,8 @@ def all_pet_history_view(request):
 
 
 
+
+
 def product_payment(request):
     # Retrieve all checkout items, ordered by the `created_at` field in the related Checkout model
     orders = CheckoutItem.objects.all().order_by('-checkout__created_at')
@@ -321,7 +329,7 @@ def product_payment(request):
 
 def pet_payment(request):
     # Retrieve all checkout items, ordered by the `created_at` field in the related Checkout model
-    orders = Pet_book.objects.all().order_by('created_at')
+    orders = Pet_book.objects.all().order_by('-created_at')
     return render(request, 'admin/pet_payment.html', {'orders': orders})
 
 from datetime import datetime
@@ -389,7 +397,7 @@ def staff_home(request):
 ############# add pet details #################
 
 def add_pet(request):
-    pets=Pet.objects.all()
+    pets=Pet.objects.all().order_by('-id')  
     category=Category_pet.objects.all()
     if request.method == "POST":
         
@@ -419,7 +427,7 @@ def add_pet(request):
             pet.pic=request.FILES["img"]
         
         pet.save()
-        messages.success(request,"Pet Created successfully")
+        messages.success(request,"Pet added successfully")
         return redirect('add_pet')   
     context={
         'category':category,
@@ -457,7 +465,7 @@ def update_pet(request,pk):
             update.pic = request.FILES['img']
         
         update.save()
-        messages.success(request,"Update successfully")
+        messages.success(request,"Updated successfully")
         return redirect('add_pet')
     context={
         'update':update,
@@ -475,7 +483,7 @@ def delete_pet(request,pk):
 ############# add product details #################
 
 def add_product(request):
-    product=Products.objects.all()
+    product=Products.objects.all().order_by('-id')
     category=Category.objects.all()
     if request.method == "POST":
         produc=Products()
@@ -501,7 +509,7 @@ def add_product(request):
             produc.pic=request.FILES["img"]
         
         produc.save()
-        messages.success(request,"Product Created successfully")
+        messages.success(request,"Product added successfully")
         return redirect('add_product')   
     context={
         'category':category,
@@ -539,7 +547,7 @@ def update_product(request,pk):
             update.pic = request.FILES['img']
         
         update.save()
-        messages.success(request,"Update successfully")
+        messages.success(request,"Updated successfully")
         return redirect('add_product')
     context={
         'update':update,
@@ -1011,7 +1019,7 @@ def update_user_profile(request,pk):
         update.email=request.POST.get('email') 
         update.Address=request.POST.get('address') 
         update.save()
-        messages.success(request,"Update successfully")
+        messages.success(request,"Updated successfully")
         return redirect('view_user_profile',pk=update.pk)
     context={
         'update':update
@@ -1020,27 +1028,55 @@ def update_user_profile(request,pk):
 
 ######### search #############
 from django.db.models import Q
+from .models import Pet, Products, Category_pet
 
 def search_items(request):
     query = request.GET.get('search', '')
 
-    pets = Pet.objects.filter(
-        Q(name__icontains=query) |
-        Q(age__icontains=query) |
-        Q(color__icontains=query) |
-        Q(price__icontains=query)
-    )
+    # Check if the query matches a category name
+    category_filter = None
+    if query:
+        # First, check if the search term is a valid category
+        try:
+            category_filter = Category_pet.objects.get(name__iexact=query)
+        except Category_pet.DoesNotExist:
+            category_filter = None
 
-    products = Products.objects.filter(
-        Q(name__icontains=query) |
-        Q(price__icontains=query)
-    )
+    # Now, filter pets and products
+    pets = Pet.objects.all()
+    products = Products.objects.all()
+
+    # If a category is found, filter pets by that category
+    if category_filter:
+        pets = pets.filter(category=category_filter)
+
+    # If the query is not a category, apply search to pets' name, age, color, and price
+    if not category_filter and query:
+        pets = pets.filter(
+            Q(name__icontains=query) |
+            Q(age__icontains=query) |
+            Q(color__icontains=query) |
+            Q(price__icontains=query)
+        )
+
+    # Filter products by name or price
+    if query:
+        products = products.filter(
+            Q(name__icontains=query) |
+            Q(price__icontains=query)
+        )
+
+    # Get all categories for filtering in the front-end
+    categories = Category_pet.objects.all()
 
     context = {
         'pets': pets,
         'products': products,
-        'query': query
+        'query': query,
+        'categories': categories,  # Available categories for filtering
+        'category_filter': category_filter  # Current selected category (if any)
     }
+
     return render(request, 'user/search_results.html', context)
 
 def staff_login(request): 
@@ -1116,6 +1152,6 @@ def pet_success(request):
 def pet_history_view(request):
     user = request.user
     # Get all checkout items for the current user, ordered by the `created_at` field in the related Checkout model
-    orders = Pet_book.objects.filter(cust=user).order_by('created_at')
+    orders = Pet_book.objects.filter(cust=user).order_by('-created_at')
     return render(request, 'user/pet_history.html', {'orders': orders})
 
